@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+[ -n "${TS_AUTHKEY:-}" ] || exit 0
+
+if [ "$(tailscale status --json 2>/dev/null | jq -r '.BackendState // empty')" = "Running" ]; then
+    exit 0
+fi
+
+tailscale up --authkey="$TS_AUTHKEY" ${TS_EXTRA_ARGS:-}

@@ -19,6 +19,7 @@ RUN apt-get update \
 
 COPY shared/msb-services/bin/* /usr/local/bin/
 COPY shared/msb-services/systemd/*.service /etc/systemd/system/
+COPY shared/msb-services/sysctl/*.conf /etc/sysctl.d/
 
 # Install Tailscale using the official script.
 RUN curl -fsSL https://tailscale.com/install.sh | sh \

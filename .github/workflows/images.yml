@@ -18,9 +18,9 @@ jobs:
       matrix:
         # Add more image folders here.
         image:
-          - name: ruby-test
-            context: ./ruby-test
-            image: container-images/ruby-test
+          - name: msb-ruby-test
+            context: ./msb-ruby-test
+            image: container-images/msb-ruby-test
 
     steps:
       - uses: actions/checkout@v6

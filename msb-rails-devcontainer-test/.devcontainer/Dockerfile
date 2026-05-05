@@ -1,6 +1,8 @@
-FROM mcr.microsoft.com/devcontainers/ruby:4.0-trixie
+FROM ghcr.io/rails/devcontainer/images/ruby:2.3.1-3.4.9
 
 ARG DEBIAN_FRONTEND=noninteractive
+
+USER root
 
 # Install PostgreSQL and systemd.
 RUN apt-get update \
@@ -24,3 +26,5 @@ RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && chmod +x /usr/local/bin/custom-* \
     && /usr/bin/systemctl enable postgresql tailscaled /etc/systemd/system/custom-*.service \
     && rm -rf /var/lib/apt/lists/*
+
+USER vscode

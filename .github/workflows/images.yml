@@ -19,8 +19,17 @@ jobs:
         # Add more image folders here.
         image:
           - name: msb-ruby-test
-            context: ./msb-ruby-test
+            folder: msb-ruby-test
+            context: .
+            dockerfile: ./msb-ruby-test/Dockerfile
             image: container-images/msb-ruby-test
+            builder: docker
+          - name: msb-rails-devcontainer-test
+            folder: msb-rails-devcontainer-test
+            context: .
+            dockerfile: ./msb-rails-devcontainer-test/.devcontainer/Dockerfile
+            image: container-images/msb-rails-devcontainer-test
+            builder: devcontainer
 
     steps:
       - uses: actions/checkout@v6
@@ -48,10 +57,30 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha
 
+      - name: Devcontainer tags
+        id: devcontainer-tags
+        if: matrix.image.builder == 'devcontainer'
+        shell: bash
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          printf 'tags=%s\n' "$(printf '%s\n' "$TAGS" | sed 's/^.*://' | paste -sd, -)" >> "$GITHUB_OUTPUT"
+
       - uses: docker/build-push-action@v6
+        if: matrix.image.builder == 'docker'
         with:
           context: ${{ matrix.image.context }}
+          file: ${{ matrix.image.dockerfile }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - uses: devcontainers/ci@v0.3
+        if: matrix.image.builder == 'devcontainer'
+        with:
+          subFolder: ${{ matrix.image.folder }}
+          imageName: ${{ steps.image.outputs.name }}
+          imageTag: ${{ steps.devcontainer-tags.outputs.tags }}
+          platform: linux/amd64,linux/arm64
+          push: always

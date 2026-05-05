@@ -7,7 +7,7 @@ Requires=tailscaled.service
 Type=oneshot
 EnvironmentFile=-/etc/default/tailscaled-auth
 PassEnvironment=TS_AUTHKEY TS_EXTRA_ARGS
-ExecStart=/usr/local/bin/tailscale-up-if-authkey
+ExecStart=/usr/local/bin/custom-tailscale-up-if-authkey
 RemainAfterExit=yes
 
 [Install]

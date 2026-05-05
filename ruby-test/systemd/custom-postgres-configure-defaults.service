@@ -1,0 +1,14 @@
+[Unit]
+Description=Configure PostgreSQL default credentials
+After=postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/postgresql-defaults
+PassEnvironment=POSTGRES_PASSWORD
+ExecStart=/usr/local/bin/custom-postgres-configure-defaults
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

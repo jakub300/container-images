@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+password="${POSTGRES_PASSWORD:-postgres}"
+
+runuser -u postgres -- psql \
+    -v ON_ERROR_STOP=1 \
+    -v password="$password" <<'SQL'
+ALTER USER postgres WITH PASSWORD :'password';
+SQL

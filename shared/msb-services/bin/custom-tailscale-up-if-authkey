@@ -7,4 +7,4 @@ if [ "$(tailscale status --json 2>/dev/null | jq -r '.BackendState // empty')" =
     exit 0
 fi
 
-tailscale up --ssh --authkey="$TS_AUTHKEY" ${TS_EXTRA_ARGS:-}
+tailscale up --ssh --netfilter-mode=off --authkey="$TS_AUTHKEY" ${TS_EXTRA_ARGS:-}

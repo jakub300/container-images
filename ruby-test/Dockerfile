@@ -14,3 +14,7 @@ RUN apt-get update \
 # Install Tailscale using the official script.
 RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && rm -rf /var/lib/apt/lists/*
+
+# Expose tailscaled through service(8).
+COPY tailscaled.init /etc/init.d/tailscaled
+RUN chmod +x /etc/init.d/tailscaled

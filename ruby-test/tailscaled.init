@@ -1,0 +1,47 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          tailscaled
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Tailscale node agent
+### END INIT INFO
+
+set -e
+
+DAEMON=/usr/sbin/tailscaled
+PIDFILE=/run/tailscale/tailscaled.pid
+STATE=/var/lib/tailscale/tailscaled.state
+SOCKET=/run/tailscale/tailscaled.sock
+
+[ -r /etc/default/tailscaled ] && . /etc/default/tailscaled
+PORT="${PORT:-41641}"
+FLAGS="${FLAGS:-}"
+
+case "$1" in
+    start)
+        mkdir -p /run/tailscale /var/lib/tailscale
+        chmod 755 /run/tailscale
+        chmod 700 /var/lib/tailscale
+        start-stop-daemon --start --quiet --background --make-pidfile \
+            --pidfile "$PIDFILE" --exec "$DAEMON" -- \
+            --state="$STATE" --socket="$SOCKET" --port="$PORT" $FLAGS
+        ;;
+    stop)
+        start-stop-daemon --stop --quiet --pidfile "$PIDFILE" --retry=TERM/30/KILL/5 || true
+        "$DAEMON" --cleanup || true
+        rm -f "$PIDFILE"
+        ;;
+    restart|force-reload)
+        "$0" stop
+        "$0" start
+        ;;
+    status)
+        start-stop-daemon --status --pidfile "$PIDFILE" --exec "$DAEMON"
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|force-reload|status}" >&2
+        exit 2
+        ;;
+esac

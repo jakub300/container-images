@@ -20,13 +20,11 @@ jobs:
         image:
           - name: msb-ruby-test
             folder: msb-ruby-test
-            context: .
             dockerfile: ./msb-ruby-test/Dockerfile
             image: container-images/msb-ruby-test
             builder: docker
           - name: msb-rails-devcontainer-test
             folder: msb-rails-devcontainer-test
-            context: .
             dockerfile: ./msb-rails-devcontainer-test/.devcontainer/Dockerfile
             image: container-images/msb-rails-devcontainer-test
             builder: devcontainer
@@ -69,8 +67,10 @@ jobs:
       - uses: docker/build-push-action@v6
         if: matrix.image.builder == 'docker'
         with:
-          context: ${{ matrix.image.context }}
+          context: ./${{ matrix.image.folder }}
           file: ${{ matrix.image.dockerfile }}
+          build-contexts: |
+            shared=./shared
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}

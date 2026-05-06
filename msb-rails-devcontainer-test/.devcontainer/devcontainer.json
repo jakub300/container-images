@@ -2,7 +2,11 @@
   "name": "msb-rails-devcontainer-test",
   "build": {
     "dockerfile": "Dockerfile",
-    "context": "../.."
+    "context": "..",
+    "options": [
+      "--build-context",
+      "shared=${localWorkspaceFolder}/../shared"
+    ]
   },
   "features": {
     "ghcr.io/rails/devcontainer/features/activestorage:1": {},

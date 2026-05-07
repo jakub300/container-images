@@ -13,6 +13,8 @@
     "ghcr.io/rails/devcontainer/features/postgres-client:1": {},
     "ghcr.io/devcontainers/features/node:1": {
       "version": "24"
-    }
-  }
+    },
+    "./shared-features/zx": {}
+  },
+  "workspaceFolder": "/workspace"
 }

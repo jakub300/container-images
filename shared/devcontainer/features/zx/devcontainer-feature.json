@@ -1,0 +1,9 @@
+{
+  "id": "zx",
+  "version": "1.0.0",
+  "name": "zx",
+  "description": "Installs zx globally with npm.",
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/node"
+  ]
+}

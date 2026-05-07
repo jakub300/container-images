@@ -26,6 +26,9 @@ RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && rm -f /usr/local/bin/systemctl \
     && chmod +x /usr/local/bin/custom-* \
     && /usr/bin/systemctl enable postgresql tailscaled /etc/systemd/system/custom-*.service \
+    && mkdir -p /workspace \
+    && chown vscode:vscode /workspace \
     && rm -rf /var/lib/apt/lists/*
 
 USER vscode
+WORKDIR /workspace

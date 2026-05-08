@@ -22,10 +22,12 @@ COPY --from=shared msb-services/systemd/*.service /etc/systemd/system/
 COPY --from=shared msb-services/sysctl/*.conf /etc/sysctl.d/
 
 # Install Tailscale using the official script.
+# Mask units that hang in msb: hvc0 getty waits forever; modules-load is unsupported.
 RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && rm -f /usr/local/bin/systemctl \
     && chmod +x /usr/local/bin/custom-* \
     && /usr/bin/systemctl enable postgresql tailscaled /etc/systemd/system/custom-*.service \
+    && /usr/bin/systemctl mask serial-getty@hvc0.service systemd-modules-load.service \
     && mkdir -p /workspace \
     && chown vscode:vscode /workspace \
     && rm -rf /var/lib/apt/lists/*

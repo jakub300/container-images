@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 USER root
 
-# Install PostgreSQL and systemd.
+# Install PostgreSQL, Redis, and systemd.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -12,6 +12,7 @@ RUN apt-get update \
         dbus \
         postgresql \
         postgresql-contrib \
+        redis-server \
         systemd \
         systemd-sysv \
     && rm -rf /var/lib/apt/lists/*
@@ -25,7 +26,7 @@ COPY --from=shared msb-services/sysctl/*.conf /etc/sysctl.d/
 RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && rm -f /usr/local/bin/systemctl \
     && chmod +x /usr/local/bin/custom-* \
-    && /usr/bin/systemctl enable postgresql /etc/systemd/system/custom-*.service \
+    && /usr/bin/systemctl enable postgresql redis-server /etc/systemd/system/custom-*.service \
     && /usr/bin/systemctl mask serial-getty@hvc0.service systemd-modules-load.service \
     && mkdir -p /workspaces \
     && chown vscode:vscode /workspaces \

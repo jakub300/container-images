@@ -3,13 +3,16 @@ FROM wordpress:php8.4-apache
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PHPIZE_DEPS="autoconf dpkg-dev file g++ gcc libc-dev make pkg-config re2c"
 
-# Install MariaDB, tmux, and systemd.
+# Install core services and CLI tools.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        bubblewrap \
         ca-certificates \
         curl \
         dbus \
+        jq \
         mariadb-server \
+        ripgrep \
         systemd \
         systemd-sysv \
         tmux \

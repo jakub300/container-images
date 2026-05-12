@@ -4,15 +4,18 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 USER root
 
-# Install PostgreSQL, Redis, tmux, and systemd.
+# Install core services and CLI tools.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        bubblewrap \
         ca-certificates \
         curl \
         dbus \
+        jq \
         postgresql \
         postgresql-contrib \
         redis-server \
+        ripgrep \
         systemd \
         systemd-sysv \
         tmux \

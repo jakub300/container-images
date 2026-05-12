@@ -18,15 +18,10 @@ jobs:
       matrix:
         # Add more image folders here.
         image:
-          - name: msb-ruby-test
-            folder: msb-ruby-test
-            dockerfile: ./msb-ruby-test/Dockerfile
-            image: container-images/msb-ruby-test
-            builder: docker
-          - name: msb-rails-devcontainer-test
-            folder: msb-rails-devcontainer-test
-            dockerfile: ./msb-rails-devcontainer-test/.devcontainer/Dockerfile
-            image: container-images/msb-rails-devcontainer-test
+          - name: msb-rails-devcontainer
+            folder: msb-rails-devcontainer
+            dockerfile: ./msb-rails-devcontainer/.devcontainer/Dockerfile
+            image: container-images/msb-rails-devcontainer
             builder: devcontainer
           - name: msb-wordpress-devcontainer
             folder: msb-wordpress-devcontainer

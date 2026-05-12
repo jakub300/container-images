@@ -1,5 +1,5 @@
 {
-  "name": "msb-rails-devcontainer-test",
+  "name": "msb-rails-devcontainer",
   "build": {
     "dockerfile": "Dockerfile",
     "context": "..",

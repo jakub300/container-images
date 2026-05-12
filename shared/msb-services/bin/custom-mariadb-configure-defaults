@@ -1,0 +1,57 @@
+#!/bin/sh
+set -eu
+
+root_password="${MYSQL_ROOT_PASSWORD:-mariadb}"
+database="${MYSQL_DATABASE:-mariadb}"
+user="${MYSQL_USER:-mariadb}"
+password="${MYSQL_PASSWORD:-mariadb}"
+
+sql_string() {
+    printf "%s" "$1" | sed "s/'/''/g"
+}
+
+sql_ident() {
+    printf "%s" "$1" | sed 's/`/``/g'
+}
+
+root_password_sql="$(sql_string "$root_password")"
+database_sql="$(sql_ident "$database")"
+user_sql="$(sql_string "$user")"
+password_sql="$(sql_string "$password")"
+
+for _ in $(seq 1 100); do
+    if mariadb --protocol=socket -uroot -e "SELECT 1" >/dev/null 2>&1; then
+        root_auth="socket"
+        break
+    fi
+
+    if mariadb --protocol=socket -uroot -p"$root_password" -e "SELECT 1" >/dev/null 2>&1; then
+        root_auth="password"
+        break
+    fi
+
+    sleep 0.1
+done
+
+[ -n "${root_auth:-}" ] || exit 1
+
+mariadb_root() {
+    if [ "$root_auth" = "password" ]; then
+        mariadb --protocol=socket -uroot -p"$root_password" "$@"
+    else
+        mariadb --protocol=socket -uroot "$@"
+    fi
+}
+
+# Match the official MariaDB container defaults.
+mariadb_root <<SQL
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${root_password_sql}';
+CREATE DATABASE IF NOT EXISTS \`${database_sql}\`;
+CREATE USER IF NOT EXISTS '${user_sql}'@'%' IDENTIFIED BY '${password_sql}';
+ALTER USER '${user_sql}'@'%' IDENTIFIED BY '${password_sql}';
+CREATE USER IF NOT EXISTS '${user_sql}'@'localhost' IDENTIFIED BY '${password_sql}';
+ALTER USER '${user_sql}'@'localhost' IDENTIFIED BY '${password_sql}';
+GRANT ALL PRIVILEGES ON \`${database_sql}\`.* TO '${user_sql}'@'%';
+GRANT ALL PRIVILEGES ON \`${database_sql}\`.* TO '${user_sql}'@'localhost';
+FLUSH PRIVILEGES;
+SQL

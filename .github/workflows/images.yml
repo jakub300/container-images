@@ -28,6 +28,11 @@ jobs:
             dockerfile: ./msb-rails-devcontainer-test/.devcontainer/Dockerfile
             image: container-images/msb-rails-devcontainer-test
             builder: devcontainer
+          - name: msb-wordpress-devcontainer
+            folder: msb-wordpress-devcontainer
+            dockerfile: ./msb-wordpress-devcontainer/.devcontainer/Dockerfile
+            image: container-images/msb-wordpress-devcontainer
+            builder: devcontainer
 
     steps:
       - uses: actions/checkout@v6

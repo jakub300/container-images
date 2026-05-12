@@ -1,5 +1,5 @@
 {
-  "name": "msb-rails-devcontainer-test",
+  "name": "msb-wordpress-devcontainer",
   "build": {
     "dockerfile": "Dockerfile",
     "context": "..",
@@ -9,12 +9,15 @@
     ]
   },
   "features": {
-    "ghcr.io/rails/devcontainer/features/activestorage:1": {},
-    "ghcr.io/rails/devcontainer/features/postgres-client:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "username": "vscode"
+    },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "24"
     },
+    "ghcr.io/devcontainers/features/git:1": {},
     "./shared-features/zx": {}
   },
+  "containerUser": "vscode",
   "workspaceFolder": "/workspaces"
 }

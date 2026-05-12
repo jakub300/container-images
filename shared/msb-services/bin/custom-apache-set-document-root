@@ -1,0 +1,37 @@
+#!/bin/sh
+set -eu
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: custom-apache-set-document-root DIRECTORY" >&2
+    exit 2
+fi
+
+document_root="$1"
+site_conf="/etc/apache2/sites-available/000-default.conf"
+root_conf="/etc/apache2/conf-available/custom-document-root.conf"
+
+mkdir -p "$document_root"
+if getent passwd vscode >/dev/null 2>&1; then
+    chown vscode:vscode "$document_root"
+fi
+
+sed -ri "s!^[[:space:]]*DocumentRoot[[:space:]].*!DocumentRoot $document_root!" "$site_conf"
+
+cat > "$root_conf" <<EOF
+<Directory $document_root>
+	Options Indexes FollowSymLinks
+	AllowOverride All
+	Require all granted
+</Directory>
+EOF
+
+a2enconf custom-document-root >/dev/null
+apache2ctl configtest >/dev/null
+
+if command -v systemctl >/dev/null 2>&1 \
+    && [ -d /run/systemd/system ] \
+    && systemctl is-active --quiet apache2; then
+    systemctl restart apache2
+elif pidof apache2 >/dev/null 2>&1; then
+    apache2ctl graceful
+fi

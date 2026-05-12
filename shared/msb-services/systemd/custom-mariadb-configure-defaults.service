@@ -1,0 +1,14 @@
+[Unit]
+Description=Configure MariaDB default credentials
+After=mariadb.service
+Requires=mariadb.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/mariadb-defaults
+PassEnvironment=MYSQL_ROOT_PASSWORD MYSQL_DATABASE MYSQL_USER MYSQL_PASSWORD
+ExecStart=/usr/local/bin/custom-mariadb-configure-defaults
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

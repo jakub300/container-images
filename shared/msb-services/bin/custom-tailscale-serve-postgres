@@ -1,8 +1,0 @@
-#!/bin/sh
-set -eu
-
-if [ "$(tailscale status --json 2>/dev/null | jq -r '.BackendState // empty')" != "Running" ]; then
-    exit 0
-fi
-
-tailscale serve --bg --tcp=5432 tcp://localhost:5432

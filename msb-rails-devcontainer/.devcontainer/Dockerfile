@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 USER root
 
-# Install PostgreSQL, Redis, and systemd.
+# Install PostgreSQL, Redis, tmux, and systemd.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -15,6 +15,7 @@ RUN apt-get update \
         redis-server \
         systemd \
         systemd-sysv \
+        tmux \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=shared msb-services/bin/custom-postgres-configure-defaults /usr/local/bin/

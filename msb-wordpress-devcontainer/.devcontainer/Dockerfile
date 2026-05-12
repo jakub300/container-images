@@ -3,7 +3,7 @@ FROM wordpress:php8.4-apache
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PHPIZE_DEPS="autoconf dpkg-dev file g++ gcc libc-dev make pkg-config re2c"
 
-# Install MariaDB and systemd.
+# Install MariaDB, tmux, and systemd.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
@@ -12,6 +12,7 @@ RUN apt-get update \
         mariadb-server \
         systemd \
         systemd-sysv \
+        tmux \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=shared msb-services/bin/custom-mariadb-configure-defaults /usr/local/bin/

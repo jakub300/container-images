@@ -1,0 +1,14 @@
+[Unit]
+Description=MinIO object storage
+After=network.target
+
+[Service]
+User=vscode
+Group=vscode
+Environment=MINIO_ROOT_USER=minioadmin
+Environment=MINIO_ROOT_PASSWORD=minioadmin
+ExecStart=/usr/local/bin/minio server /var/lib/minio --address :9000 --console-address :9001
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

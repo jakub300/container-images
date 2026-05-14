@@ -54,6 +54,7 @@ COPY --from=shared msb-services/sysctl/*.conf /etc/sysctl.d/
 # Mask units that hang in msb: hvc0 getty waits forever; modules-load is unsupported.
 RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && rm -f /usr/local/bin/systemctl \
+    && printf '%s\n' '' 'eval "$(mise activate --shims)"' >> /home/vscode/.profile \
     && chmod +x /usr/local/bin/custom-* \
     && mkdir -p /var/lib/minio \
     && chown vscode:vscode /var/lib/minio \

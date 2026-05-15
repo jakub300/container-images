@@ -4,6 +4,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG MINIO_VERSION=RELEASE.2025-09-07T16-13-09Z
 ARG MINIO_SHA256_AMD64=7c5bd8512c6e966455b1d198209358b2d191c77a83ab377c4073281065fb855f
 ARG MINIO_SHA256_ARM64=5c83cd2cf151717ba0243f73e1c7802ff36e272b67144bdd7f1f7d684fd6f03d
+ARG MINIO_CLIENT_VERSION=RELEASE.2025-08-13T08-35-41Z
+ARG MINIO_CLIENT_SHA256_AMD64=01f866e9c5f9b87c2b09116fa5d7c06695b106242d829a8bb32990c00312e891
+ARG MINIO_CLIENT_SHA256_ARM64=14c8c9616cfce4636add161304353244e8de383b2e2752c0e9dad01d4c27c12c
 ARG OVERMIND_VERSION=v2.5.1
 ARG OVERMIND_SHA256_AMD64=a17159b8e97d13f3679a4e8fbc9d4747f82d5af9f6d32597b72821378b5d0b6f
 ARG OVERMIND_SHA256_ARM64=42cb6d79c8adcf4c68dfb2ddf09e63a0803b023af5b17d42e05ccbfa4b86bee2
@@ -37,8 +40,8 @@ RUN apt-get update \
 RUN set -eux; \
     arch="${TARGETARCH:-$(dpkg --print-architecture)}"; \
     case "${arch}" in \
-        amd64) overmind_sha="${OVERMIND_SHA256_AMD64}"; minio_sha="${MINIO_SHA256_AMD64}" ;; \
-        arm64) overmind_sha="${OVERMIND_SHA256_ARM64}"; minio_sha="${MINIO_SHA256_ARM64}" ;; \
+        amd64) overmind_sha="${OVERMIND_SHA256_AMD64}"; minio_sha="${MINIO_SHA256_AMD64}"; mc_sha="${MINIO_CLIENT_SHA256_AMD64}" ;; \
+        arm64) overmind_sha="${OVERMIND_SHA256_ARM64}"; minio_sha="${MINIO_SHA256_ARM64}"; mc_sha="${MINIO_CLIENT_SHA256_ARM64}" ;; \
         *) echo "unsupported arch: ${arch}" >&2; exit 1 ;; \
     esac; \
     curl -fsSL -o /tmp/overmind.gz "https://github.com/DarthSim/overmind/releases/download/${OVERMIND_VERSION}/overmind-${OVERMIND_VERSION}-linux-${arch}.gz"; \
@@ -48,6 +51,9 @@ RUN set -eux; \
     curl -fsSL -o /usr/local/bin/minio "https://github.com/minio/minio/releases/download/${MINIO_VERSION}/minio.linux-${arch}.${MINIO_VERSION}"; \
     printf '%s  /usr/local/bin/minio\n' "${minio_sha}" | sha256sum -c -; \
     chmod +x /usr/local/bin/minio; \
+    curl -fsSL -o /usr/local/bin/mc "https://github.com/minio/mc/releases/download/${MINIO_CLIENT_VERSION}/mc.linux-${arch}.${MINIO_CLIENT_VERSION}"; \
+    printf '%s  /usr/local/bin/mc\n' "${mc_sha}" | sha256sum -c -; \
+    chmod +x /usr/local/bin/mc; \
     rm -f /tmp/overmind.gz
 
 COPY --from=shared msb-services/bin/custom-postgres-configure-defaults /usr/local/bin/

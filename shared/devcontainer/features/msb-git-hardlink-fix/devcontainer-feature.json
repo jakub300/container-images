@@ -1,9 +1,0 @@
-{
-  "id": "msb-git-hardlink-fix",
-  "version": "1.0.0",
-  "name": "MSB Git hardlink fix",
-  "description": "Replaces Git remote-helper hardlinks with symlinks for MSB.",
-  "installsAfter": [
-    "ghcr.io/devcontainers/features/git"
-  ]
-}

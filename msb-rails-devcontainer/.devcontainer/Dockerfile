@@ -1,4 +1,4 @@
-FROM ghcr.io/rails/devcontainer/images/ruby:2.3.1-3.4.9
+FROM buildpack-deps:trixie-curl
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG MINIO_VERSION=RELEASE.2025-09-07T16-13-09Z
@@ -11,6 +11,10 @@ ARG TARGETARCH
 
 USER root
 
+# Match devcontainers/base user defaults before features run.
+RUN groupadd --gid 1000 vscode \
+    && useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash vscode
+
 # Install core services and CLI tools.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -18,6 +22,7 @@ RUN apt-get update \
         ca-certificates \
         curl \
         dbus \
+        git \
         jq \
         postgresql \
         postgresql-contrib \

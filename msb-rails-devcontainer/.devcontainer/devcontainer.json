@@ -9,13 +9,19 @@
     ]
   },
   "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "username": "vscode"
+    },
+    "ghcr.io/rails/devcontainer/features/ruby:2": {
+      "version": "3.4.9",
+      "usePrecompiledRubies": true
+    },
     "ghcr.io/rails/devcontainer/features/activestorage:1": {},
     "ghcr.io/rails/devcontainer/features/postgres-client:1": {},
     "ghcr.io/devcontainers/features/node:1": {
       "version": "24"
     },
-    "./shared-features/zx": {},
-    "./shared-features/msb-git-hardlink-fix": {}
+    "./shared-features/zx": {}
   },
   "workspaceFolder": "/workspaces"
 }

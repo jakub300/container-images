@@ -1,0 +1,13 @@
+{
+  "id": "gitlab-cli",
+  "version": "1.0.0",
+  "name": "GitLab CLI",
+  "description": "Installs the official GitLab CLI.",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "description": "GitLab CLI version to install."
+    }
+  }
+}

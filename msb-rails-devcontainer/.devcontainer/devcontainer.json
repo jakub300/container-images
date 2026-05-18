@@ -23,6 +23,7 @@
     "ghcr.io/devcontainers/features/node:1": {
       "version": "24"
     },
+    "./shared-features/gitlab-cli": {},
     "./shared-features/zx": {}
   },
   "workspaceFolder": "/workspaces"

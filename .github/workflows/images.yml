@@ -69,7 +69,7 @@ jobs:
         run: |
           printf 'tags=%s\n' "$(printf '%s\n' "$TAGS" | sed 's/^.*://' | paste -sd, -)" >> "$GITHUB_OUTPUT"
 
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         if: matrix.image.builder == 'docker'
         with:
           context: ./${{ matrix.image.folder }}
@@ -80,6 +80,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.image.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image.name }}
 
       - uses: devcontainers/ci@v0.3
         if: matrix.image.builder == 'devcontainer'
@@ -89,3 +91,5 @@ jobs:
           imageTag: ${{ steps.devcontainer-tags.outputs.tags }}
           platform: linux/amd64,linux/arm64
           push: always
+          cacheFrom: type=gha,scope=${{ matrix.image.name }}
+          cacheTo: type=gha,mode=max,scope=${{ matrix.image.name }}

@@ -12,8 +12,8 @@
     "ghcr.io/devcontainers/features/common-utils:2": {
       "username": "vscode"
     },
-    "ghcr.io/rails/devcontainer/features/ruby:2": {
-      "version": "3.4.9",
+    "ghcr.io/rails/devcontainer/features/ruby:2.2.2": {
+      "version": "4.0.4",
       "usePrecompiledRubies": true
     },
     "ghcr.io/rails/devcontainer/features/activestorage:1": {

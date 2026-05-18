@@ -20,7 +20,7 @@
       "resolved": "ghcr.io/rails/devcontainer/features/postgres-client@sha256:7e6b118646d6e0d82a9ec06e81ad1b5406f7042f0279d35fff3a7a612be7a050",
       "integrity": "sha256:7e6b118646d6e0d82a9ec06e81ad1b5406f7042f0279d35fff3a7a612be7a050"
     },
-    "ghcr.io/rails/devcontainer/features/ruby:2": {
+    "ghcr.io/rails/devcontainer/features/ruby:2.2.2": {
       "version": "2.2.2",
       "resolved": "ghcr.io/rails/devcontainer/features/ruby@sha256:7c86be7a867d193bbc2684593ed7cbeecd803230c89713d1f2b341643809c149",
       "integrity": "sha256:7c86be7a867d193bbc2684593ed7cbeecd803230c89713d1f2b341643809c149"

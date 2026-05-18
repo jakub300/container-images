@@ -16,7 +16,9 @@
       "version": "3.4.9",
       "usePrecompiledRubies": true
     },
-    "ghcr.io/rails/devcontainer/features/activestorage:1": {},
+    "ghcr.io/rails/devcontainer/features/activestorage:1": {
+      "variantProcessor": "mini_magick"
+    },
     "ghcr.io/rails/devcontainer/features/postgres-client:1": {},
     "ghcr.io/devcontainers/features/node:1": {
       "version": "24"

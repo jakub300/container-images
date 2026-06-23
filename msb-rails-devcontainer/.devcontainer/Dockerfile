@@ -1,4 +1,4 @@
-FROM buildpack-deps:trixie-curl
+FROM ghcr.io/rails/devcontainer/images/ruby:2.3.3-4.0.5
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG MINIO_VERSION=RELEASE.2025-09-07T16-13-09Z
@@ -14,10 +14,6 @@ ARG TARGETARCH
 
 USER root
 
-# Match devcontainers/base user defaults before features run.
-RUN groupadd --gid 1000 vscode \
-    && useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash vscode
-
 # Install core services and CLI tools.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -25,7 +21,6 @@ RUN apt-get update \
         ca-certificates \
         curl \
         dbus \
-        git \
         jq \
         postgresql \
         postgresql-contrib \
@@ -65,7 +60,6 @@ COPY --from=shared msb-services/sysctl/*.conf /etc/sysctl.d/
 # Mask units that hang in msb: hvc0 getty waits forever; modules-load is unsupported.
 RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && rm -f /usr/local/bin/systemctl \
-    && printf '%s\n' '' 'eval "$(mise activate --shims)"' >> /home/vscode/.profile \
     && chmod +x /usr/local/bin/custom-* \
     && mkdir -p /var/lib/minio \
     && chown vscode:vscode /var/lib/minio \
@@ -74,6 +68,8 @@ RUN curl -fsSL https://tailscale.com/install.sh | sh \
     && mkdir -p /workspaces \
     && chown vscode:vscode /workspaces \
     && rm -rf /var/lib/apt/lists/*
+
+ENV PATH="/home/vscode/.local/share/mise/shims:${PATH}"
 
 USER vscode
 WORKDIR /workspaces

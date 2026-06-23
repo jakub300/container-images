@@ -28,11 +28,6 @@ jobs:
             dockerfile: ./msb-wordpress-devcontainer/.devcontainer/Dockerfile
             image: container-images/msb-wordpress-devcontainer
             builder: devcontainer
-          - name: msb-git-hardlink-corruption-repro
-            folder: msb-git-hardlink-corruption-repro
-            dockerfile: ./msb-git-hardlink-corruption-repro/Dockerfile
-            image: container-images/msb-git-hardlink-corruption-repro
-            builder: docker
 
     steps:
       - uses: actions/checkout@v6

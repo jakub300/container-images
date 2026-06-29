@@ -1,0 +1,13 @@
+{
+  "id": "code-server",
+  "version": "1.0.0",
+  "name": "code-server",
+  "description": "Installs code-server from the official Debian package.",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "description": "code-server version to install."
+    }
+  }
+}
